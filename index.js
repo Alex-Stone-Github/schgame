@@ -39,6 +39,12 @@ app.get("/", (req, res) => {
 app.get("/src/main.js", (req, res) => {
     res.end(readFile("./public/src/main.js"));
 });
+app.get("/src/networking.js", (req, res) => {
+    res.end(readFile("./public/src/networking.js"));
+})
+app.get("/css/main.css", (req, res) => {
+    res.end(readFile("./public/css/main.css"));
+})
 
 // Final Setup
 const port = 8000;

@@ -1,13 +1,8 @@
-const socket = io("ws://localhost:8000")
 
-socket.on("message", (data) => {
-    const el = document.createElement("li");
-    el.innerHTML = data;
-    document.getElementById("messages").appendChild(el);``
-});
+function setup() {
+    createCanvas(windowWidth, windowHeight-10);
+}
 
-
-document.querySelector("button").onclick = () => {
-    const text = document.querySelector("input").value;
-    socket.emit("message", text);
+function draw() {
+    background(200);
 }
