@@ -22,13 +22,29 @@ function readFile(path) {
 
 
 // Socket Events
+var players = [];
 io.on("connection", (socket) => {
+    // this literally just rebroadcasts an message it recieves
     console.log("A user has connected!");
     socket.on("message", (message) => {
-        console.log(message);
-        io.emit("message", `${socket.id} said ${message}`);
+        let data = JSON.parse(message);
+        let np = {
+            x:data.x,
+            y:data.y,
+            id:socket.id,
+        }
+        for (let i = 0; i < players.length; i ++) {
+            if (players[i].id == np.id) {
+                players[i] = np;
+                return; // just end else append new
+            }
+        }
+        players.push(np);
     })
 });
+setInterval(() => {
+    io.emit("message", JSON.stringify(players));
+}, 10)
 
 
 
@@ -44,6 +60,26 @@ app.get("/src/networking.js", (req, res) => {
 })
 app.get("/css/main.css", (req, res) => {
     res.end(readFile("./public/css/main.css"));
+})
+app.get("/src/brick.js", (req, res) => {
+    res.end(readFile("./public/src/brick.js"));
+})
+app.get("/src/entitiy.js", (req, res) => {
+    res.end(readFile("./public/src/entity.js"));
+})
+app.get("/src/texture.js", (req, res) => {
+    res.end(readFile("./public/src/texture.js"));
+})
+app.get("/src/vector.js", (req, res) => {
+    res.end(readFile("./public/src/vector.js"));
+})
+app.get("/src/player.js", (req, res) => {
+    res.end(readFile("./public/src/player.js"));
+})
+
+// Resources
+app.get("/res/brick.jpg", (req, res) => {
+    res.sendFile(__dirname + "/public/res/brick.jpg");
 })
 
 // Final Setup
